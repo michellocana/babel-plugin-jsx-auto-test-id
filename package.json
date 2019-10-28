@@ -1,0 +1,27 @@
+{
+  "name": "babel-plugin-jsx-add-data-gtm-id",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --no-cache"
+  },
+  "keywords": [],
+  "author": "Michell Ocaña",
+  "license": "MIT",
+  "peerDependencies": {
+    "@babel/core": "^7.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@types/jest": "^24.0.20",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "jest": "^24.9.0",
+    "lodash": "^4.17.15",
+    "react": "^16.11.0",
+    "react-test-renderer": "^16.11.0"
+  }
+}
