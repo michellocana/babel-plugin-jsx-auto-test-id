@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-jsx-add-data-gtm-id",
+  "name": "babel-plugin-jsx-auto-test-id",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

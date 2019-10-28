@@ -1,12 +1,13 @@
 const _ = require('lodash')
 
-const GTM_ATTRIBUTE = 'data-gtm-id'
+const DEFAULT_ATTRIBUTE = 'data-test'
 
 function AddDataGtmId({ types: t }) {
   return {
-    name: 'babel-plugin-jsx-add-data-gtm-id',
+    name: 'babel-plugin-jsx-auto-test-id',
     visitor: {
-      JSXOpeningElement(path) {
+      JSXOpeningElement(path, state) {
+        const attributeName = state.opts.attributeName || DEFAULT_ATTRIBUTE
         const parentCallExpression = path.findParent(path => path.isCallExpression())
         const parentFunction = path.getFunctionParent()
         const parentVariableDeclarator = path.findParent(path => path.isVariableDeclarator())
@@ -20,7 +21,7 @@ function AddDataGtmId({ types: t }) {
           _.get(parentVariableDeclarator, 'node.id.name')
 
         const hasAttribute = !!path.node.attributes.find(
-          attribute => attribute.name.name === GTM_ATTRIBUTE
+          attribute => attribute.name.name === attributeName
         )
 
         // Doing nothing if component name was not found or already have attribute
@@ -34,7 +35,7 @@ function AddDataGtmId({ types: t }) {
 
         if (isHostElement) {
           path.node.attributes.push(
-            t.jsxAttribute(t.jsxIdentifier(GTM_ATTRIBUTE), t.stringLiteral(identifier))
+            t.jsxAttribute(t.jsxIdentifier(attributeName), t.stringLiteral(identifier))
           )
         }
       }
