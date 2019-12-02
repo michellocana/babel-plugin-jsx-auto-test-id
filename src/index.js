@@ -20,9 +20,7 @@ function AddDataGtmId({ types: t }) {
           // Getting variable name for arrow function components
           _.get(parentVariableDeclarator, 'node.id.name')
 
-        const hasAttribute = !!path.node.attributes.find(
-          attribute => attribute.name.name === attributeName
-        )
+        const hasAttribute = !!path.node.attributes.find(attribute => _.get(attribute, 'name.name') === attributeName)
 
         // Doing nothing if component name was not found or already have attribute
         if (!identifier || hasAttribute) return
@@ -34,9 +32,7 @@ function AddDataGtmId({ types: t }) {
         const isHostElement = t.isReturnStatement(jsxElementParent.parent)
 
         if (isHostElement) {
-          path.node.attributes.push(
-            t.jsxAttribute(t.jsxIdentifier(attributeName), t.stringLiteral(identifier))
-          )
+          path.node.attributes.push(t.jsxAttribute(t.jsxIdentifier(attributeName), t.stringLiteral(identifier)))
         }
       }
     }
