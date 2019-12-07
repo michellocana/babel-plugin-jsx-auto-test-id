@@ -4,8 +4,9 @@ import renderer from 'react-test-renderer'
 import ClassComponent from './fixtures/ClassComponent'
 import FunctionComponent from './fixtures/FunctionComponent'
 import ArrowFunctionComponent from './fixtures/ArrowFunctionComponent'
-import DataGtmIdComponent from './fixtures/DataGtmIdComponent'
+import CustomDataIdComponent from './fixtures/CustomDataIdComponent'
 import ChildrenComponent from './fixtures/ChildrenComponent'
+import ReactMemoComponent from './fixtures/ReactMemoComponent'
 
 it('should add data-test to class component', () => {
   const component = renderer.create(<ClassComponent />)
@@ -30,7 +31,7 @@ it('should add data-test to arrow function component', () => {
 
 it('should keep already settled attributes', () => {
   const customId = 'MyCustomDataGtmId'
-  const component = renderer.create(<DataGtmIdComponent customId={customId} />)
+  const component = renderer.create(<CustomDataIdComponent customId={customId} />)
   const tree = component.toJSON()
 
   expect(tree.props).toHaveProperty('data-test', customId)
@@ -41,4 +42,11 @@ it('should add attribute only on host element', () => {
   const tree = component.toJSON()
 
   expect(tree.children.find(c => c.props['data-test'])).toBeUndefined()
+})
+
+it('should add data-test to React.memo components', () => {
+  const component = renderer.create(<ReactMemoComponent />)
+  const tree = component.toJSON()
+
+  expect(tree.props).toHaveProperty('data-test', 'ReactMemoComponent')
 })

@@ -3,9 +3,9 @@ import React from 'react'
 function ChildrenComponent() {
   return (
     <div>
-      <div>children 1</div>
-      <div>children 2</div>
-      <div>children 3</div>
+      <div>foo</div>
+      <div>bar</div>
+      <div>baz</div>
     </div>
   )
 }

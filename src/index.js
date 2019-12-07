@@ -17,7 +17,7 @@ function AddDataGtmId({ types: t }) {
           _.get(parentCallExpression, 'node.arguments[0].name') ||
           // Getting function name for function components
           _.get(parentFunction, 'node.id.name') ||
-          // Getting variable name for arrow function components
+          // Getting variable name for arrow function components or React.memo'ed components
           _.get(parentVariableDeclarator, 'node.id.name')
 
         const hasAttribute = !!path.node.attributes.find(attribute => _.get(attribute, 'name.name') === attributeName)
