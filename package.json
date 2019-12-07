@@ -6,11 +6,20 @@
   "scripts": {
     "test": "jest --no-cache"
   },
-  "keywords": [],
+  "keywords": [
+    "babel",
+    "data-test",
+    "automation",
+    "e2e tests"
+  ],
   "author": "Michell Ocaña",
   "license": "MIT",
   "peerDependencies": {
     "@babel/core": "^7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michellocana/babel-plugin-jsx-auto-test-id"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
