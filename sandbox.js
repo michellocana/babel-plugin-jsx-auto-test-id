@@ -2,10 +2,10 @@ const babel = require('@babel/core')
 
 babel.transform(
   `
-import React from 'react'
+import * as React from 'react'
 
 export default function FunctionComponent() {
-  return <div />
+  return <React.Fragment />
 }
   `,
   {

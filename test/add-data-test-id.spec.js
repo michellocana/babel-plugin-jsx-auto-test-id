@@ -8,6 +8,10 @@ import CustomDataIdComponent from './fixtures/CustomDataIdComponent'
 import ChildrenComponent from './fixtures/ChildrenComponent'
 import ReactMemoComponent from './fixtures/ReactMemoComponent'
 import RenderFunctionComponent from './fixtures/RenderFunctionComponent'
+import ReactFragmentComponent from './fixtures/ReactFragmentComponent'
+import FragmentComponent from './fixtures/FragmentComponent'
+import FragmentWithAliasComponent from './fixtures/FragmentWithAliasComponent'
+import ReactFragmentWithNamespaceComponent from './fixtures/ReactFragmentWithNamespaceComponent'
 
 it('should add data-test to class component', () => {
   const component = renderer.create(<ClassComponent />)
@@ -52,9 +56,38 @@ it('should add attribute only on host element', () => {
   expect(tree.children.find(c => c.props['data-test'])).toBeUndefined()
 })
 
-test('should add attribute only on host element when component has render function', () => {
+it('should add attribute only on host element when component has render function', () => {
   const component = renderer.create(<RenderFunctionComponent />)
   const tree = component.toJSON()
 
   expect(tree.children.find(c => c.props['data-test'])).toBeUndefined()
+})
+
+it('should not add attribute in React.Fragment container', () => {
+  const component = renderer.create(<ReactFragmentComponent />)
+  const tree = component.toJSON()
+
+  expect(tree.type).toBe('div')
+})
+
+it('should not add attribute in Fragment container', () => {
+  const component = renderer.create(<FragmentComponent />)
+  const tree = component.toJSON()
+
+  expect(tree.type).toBe('div')
+})
+
+it('should not add attribute in Fragment container with import alias', () => {
+  const component = renderer.create(<FragmentWithAliasComponent />)
+  const tree = component.toJSON()
+
+  expect(tree.type).toBe('div')
+})
+
+
+it('should not add attribute in React.Fragment container with namespace import', () => {
+  const component = renderer.create(<ReactFragmentWithNamespaceComponent />)
+  const tree = component.toJSON()
+
+  expect(tree.type).toBe('div')
 })

@@ -3,9 +3,26 @@ const _ = require('lodash')
 const DEFAULT_ATTRIBUTE = 'data-test'
 
 function AddDataTestId({ types: t }) {
+  const detectReactImport = (path, state) => {
+    const parentImportDeclaration = path.findParent(parent => parent.type === 'ImportDeclaration')
+    const isReactImport = _.get(parentImportDeclaration, 'node.source.value') === 'react'
+
+    if (isReactImport) {
+      const reactLocalName = _.get(path, 'node.local.name')
+      const fragmentImportSpecifier = parentImportDeclaration.node.specifiers.find(specifier => _.get(specifier, 'imported.name') === 'Fragment')
+      const fragmentLocalName = _.get(fragmentImportSpecifier, 'local.name')
+      state.set('reactLocalName', reactLocalName)
+      state.set('fragmentLocalName', fragmentLocalName)
+    }
+  }
+
+
   return {
     name: 'babel-plugin-jsx-auto-test-id',
     visitor: {
+      ImportNamespaceSpecifier: detectReactImport,
+      ImportDefaultSpecifier: detectReactImport,
+      ImportSpecifier: detectReactImport,
       JSXOpeningElement(path, state) {
         const attributeName = state.opts.attributeName || DEFAULT_ATTRIBUTE
         const identifier = getIdentifier(path)
@@ -13,7 +30,7 @@ function AddDataTestId({ types: t }) {
         // Doing nothing if component name was not found or already have attribute
         if (!identifier || hasCustomAttribute(path, attributeName)) return
 
-        if (isHostElement(t, path)) {
+        if (isHostElement(t, path) && !isFragment(path, state)) {
           const jsxIdentifier = t.jsxIdentifier(attributeName)
           const stringLiteral = t.stringLiteral(identifier)
           const jsxAttribute = t.jsxAttribute(jsxIdentifier, stringLiteral)
@@ -55,6 +72,25 @@ function isHostElement(t, path) {
     // Also checking if parent function is not inside another function
     !parentFunction.findParent(path => path.isFunctionDeclaration())
   )
+}
+
+function isFragment(path, state) {
+  const reactLocalName = state.get('reactLocalName')
+  const fragmentLocalName = state.get('fragmentLocalName')
+  const isJsxMemberExpression = _.get(path, 'node.name.type') === 'JSXMemberExpression'
+  const isJsxIdentifier = _.get(path, 'node.name.type') === 'JSXIdentifier'
+
+  if (isJsxMemberExpression) {
+    const jsxIdentifier = path.node.name
+    return jsxIdentifier.object.name === reactLocalName && jsxIdentifier.property.name === 'Fragment'
+  }
+
+  if (isJsxIdentifier) {
+    const jsxIdentifier = path.node.name
+    return jsxIdentifier.name === fragmentLocalName
+  }
+
+  return false
 }
 
 module.exports = AddDataTestId
