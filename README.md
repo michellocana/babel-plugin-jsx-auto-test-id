@@ -1,4 +1,4 @@
-# babel-plugin-jsx-auto-test-id
+# babel-plugin-jsx-auto-test-id &middot; [![package version](https://img.shields.io/github/package-json/v/michellocana/babel-plugin-jsx-auto-test-id)](https://www.npmjs.com/package/babel-plugin-jsx-auto-test-id) [![tests](https://github.com/michellocana/babel-plugin-jsx-auto-test-id/workflows/tests/badge.svg?branch=master)](https://github.com/michellocana/babel-plugin-jsx-auto-test-id/actions?query=workflow%3Atests)
 
 Automatically adds data-test id's to every component host element. Useful to E2E tests.
 
