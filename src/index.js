@@ -1,16 +1,14 @@
-const _ = require('lodash')
-
 const DEFAULT_ATTRIBUTE = 'data-test'
 
 function AddDataTestId({ types: t }) {
   const detectReactImport = (path, state) => {
     const parentImportDeclaration = path.findParent(parent => parent.type === 'ImportDeclaration')
-    const isReactImport = _.get(parentImportDeclaration, 'node.source.value') === 'react'
+    const isReactImport = parentImportDeclaration?.node?.source?.value === 'react'
 
     if (isReactImport) {
-      const reactLocalName = _.get(path, 'node.local.name')
-      const fragmentImportSpecifier = parentImportDeclaration.node.specifiers.find(specifier => _.get(specifier, 'imported.name') === 'Fragment')
-      const fragmentLocalName = _.get(fragmentImportSpecifier, 'local.name')
+      const reactLocalName = path?.node?.local?.name
+      const fragmentImportSpecifier = parentImportDeclaration.node.specifiers.find(specifier => specifier?.imported?.name === 'Fragment')
+      const fragmentLocalName = fragmentImportSpecifier?.local?.name
       state.set('reactLocalName', reactLocalName)
       state.set('fragmentLocalName', fragmentLocalName)
     }
@@ -48,16 +46,16 @@ function getIdentifier(path) {
 
   return (
     // Getting first argument of React.createClass for class components
-    _.get(parentCallExpression, 'node.arguments[0].name') ||
+    parentCallExpression?.node?.arguments[0]?.name ||
     // Getting function name for function components
-    _.get(parentFunction, 'node.id.name') ||
+    parentFunction?.node?.id?.name ||
     // Getting variable name for arrow function components or React.memo'ed components
-    _.get(parentVariableDeclarator, 'node.id.name')
+    parentVariableDeclarator?.node?.id?.name
   )
 }
 
 function hasCustomAttribute(path, attributeName) {
-  return !!path.node.attributes.find(attribute => _.get(attribute, 'name.name') === attributeName)
+  return !!path.node.attributes.find(attribute => attribute.name?.name === attributeName)
 }
 
 function isHostElement(t, path) {
@@ -77,8 +75,8 @@ function isHostElement(t, path) {
 function isFragment(path, state) {
   const reactLocalName = state.get('reactLocalName')
   const fragmentLocalName = state.get('fragmentLocalName')
-  const isJsxMemberExpression = _.get(path, 'node.name.type') === 'JSXMemberExpression'
-  const isJsxIdentifier = _.get(path, 'node.name.type') === 'JSXIdentifier'
+  const isJsxMemberExpression = path.node?.name?.type === 'JSXMemberExpression'
+  const isJsxIdentifier = path.node?.name?.type === 'JSXIdentifier'
 
   if (isJsxMemberExpression) {
     const jsxIdentifier = path.node.name
