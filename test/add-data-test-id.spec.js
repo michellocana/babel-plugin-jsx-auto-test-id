@@ -53,6 +53,7 @@ it('should add attribute only on host element', () => {
   const component = renderer.create(<ChildrenComponent />)
   const tree = component.toJSON()
 
+  expect(tree.props).toHaveProperty('data-test')
   expect(tree.children.find(c => c.props['data-test'])).toBeUndefined()
 })
 
@@ -60,6 +61,7 @@ it('should add attribute only on host element when component has render function
   const component = renderer.create(<RenderFunctionComponent />)
   const tree = component.toJSON()
 
+  expect(tree.props).toHaveProperty('data-test')
   expect(tree.children.find(c => c.props['data-test'])).toBeUndefined()
 })
 
@@ -68,6 +70,7 @@ it('should not add attribute in React.Fragment container', () => {
   const tree = component.toJSON()
 
   expect(tree.type).toBe('div')
+  expect(tree.props).not.toHaveProperty('data-test')
 })
 
 it('should not add attribute in Fragment container', () => {
@@ -75,6 +78,7 @@ it('should not add attribute in Fragment container', () => {
   const tree = component.toJSON()
 
   expect(tree.type).toBe('div')
+  expect(tree.props).not.toHaveProperty('data-test')
 })
 
 it('should not add attribute in Fragment container with import alias', () => {
@@ -82,6 +86,7 @@ it('should not add attribute in Fragment container with import alias', () => {
   const tree = component.toJSON()
 
   expect(tree.type).toBe('div')
+  expect(tree.props).not.toHaveProperty('data-test')
 })
 
 
@@ -90,4 +95,5 @@ it('should not add attribute in React.Fragment container with namespace import',
   const tree = component.toJSON()
 
   expect(tree.type).toBe('div')
+  expect(tree.props).not.toHaveProperty('data-test')
 })
